@@ -1,0 +1,10 @@
+# Create a heatmap, assuming ground truth data is available and attributed on the flooding dataframe
+
+import seaborn as sn
+import matplotlib.pyplot as plt
+import pandas as pd
+
+confusion_matrix = pd.crosstab(floodingdf['groundtruth'], floodingdf['prediction'], rownames=['Actual'], colnames=['Predicted'])
+
+sn.heatmap(confusion_matrix, annot=True)
+plt.show()
