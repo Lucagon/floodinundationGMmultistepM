@@ -26,7 +26,6 @@ fig = pygmt.Figure()
 
 pygmt.config(FORMAT_GEO_MAP="ddd.x", MAP_FRAME_TYPE="plain")
 
-
 pygmt.makecpt(cmap="haxby", series=[0, 1, 1])
 fig.grdimage(
     region = floodingregion,
@@ -36,8 +35,6 @@ fig.grdimage(
     cmap = True,
 )
 
-
 fig.colorbar(position="JML+o1.4c/0c+w7c/0.5c", frame=["xa200f50+lInundation", "y+l "])
-
 
 fig.show()
