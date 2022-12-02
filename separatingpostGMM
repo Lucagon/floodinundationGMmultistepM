@@ -1,8 +1,5 @@
-import seaborn as sn
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.utils.extmath import row_norms
 
 # Stratify dataframe by 3-component results
 component0df = floodingdf[yubastandarddfinitial.target3component == 0]
