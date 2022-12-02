@@ -1,5 +1,8 @@
 # lonlength = number of pixel grid unique longitude values
+# A prediction value of 0 means that the pixel is predicted to be dry
+# A prediction value of 1 means that the pixel is predicted to be inundated
 
+# A nearest-neighbor rules-based approach
 for i in range(len(highgradcomponent01df)):
   if 0 < highgradcomponent01df['aspect'].iloc[i] <= 45:
     if highgradcomponent01df['aspect'].iloc[i] > highgradcomponent01df.iloc[i - lonlength, 6]:
