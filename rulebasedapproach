@@ -2,7 +2,10 @@
 # A prediction value of 0 means that the pixel is predicted to be dry
 # A prediction value of 1 means that the pixel is predicted to be inundated
 
-# A nearest-neighbor rules-based approach
+import pandas as pd
+
+
+# A nearest-neighbor rules-based approach for high-gradient component 0//1 pixels
 for i in range(len(highgradcomponent01df)):
   if 0 < highgradcomponent01df['aspect'].iloc[i] <= 45:
     if highgradcomponent01df['aspect'].iloc[i] > highgradcomponent01df.iloc[i - lonlength, 6]:
@@ -10,11 +13,13 @@ for i in range(len(highgradcomponent01df)):
     if highgradcomponent01df['aspect'].iloc[i] <= highgradcomponent01df.iloc[i - lonlength, 6]:
       highgradcomponent01df['prediction'].iloc[i] = 1
 
+
   if 45 < highgradcomponent01df['aspect'].iloc[i] <= 135:
     if highgradcomponent01df['aspect'].iloc[i] > highgradcomponent01df.iloc[i + 1, 6]:
       highgradcomponent01df['prediction'].iloc[i] = 0
     if highgradcomponent01df['aspect'].iloc[i] <= highgradcomponent01df.iloc[i + 1, 6]:
       highgradcomponent01df['prediction'].iloc[i] = 1
+
 
   if 135 < highgradcomponent01df['aspect'].iloc[i] <= 225:
     if highgradcomponent01df['aspect'].iloc[i] > highgradcomponent01df.iloc[i + lonlength, 6]:
@@ -22,11 +27,13 @@ for i in range(len(highgradcomponent01df)):
     if highgradcomponent01df['aspect'].iloc[i] <= highgradcomponent01df.iloc[i + lonlength, 6]:
       highgradcomponent01df['prediction'].iloc[i] = 1
 
+
   if 225 < highgradcomponent01df['aspect'].iloc[i] <= 315:
     if highgradcomponent01df['aspect'].iloc[i] > highgradcomponent01df.iloc[i - 1, 6]:
       highgradcomponent01df['prediction'].iloc[i] = 0
     if highgradcomponent01df['aspect'].iloc[i] <= highgradcomponent01df.iloc[i - 1, 6]:
       highgradcomponent01df['prediction'].iloc[i] = 1
+
 
   if 315 < highgradcomponent01df['aspect'].iloc[i] <= 360:
     if highgradcomponent01df['aspect'].iloc[i] > highgradcomponent01df.iloc[i - lonlength, 6]:
@@ -34,4 +41,17 @@ for i in range(len(highgradcomponent01df)):
     if highgradcomponent01df['aspect'].iloc[i] <= highgradcomponent01df.iloc[i - lonlength, 6]:
       highgradcomponent01df['prediction'].iloc[i] = 1
 
+# Assumptions for low-gradient component 0//1 pixels
+# The first component is assumed to have detectable statistics implying that it is largely inundated. Switch accordingly
+
+
+for i in range(len(lowgradcomponent01df)):
+   if lowgradcomponent01df['3component'].iloc[i] == 0:
+     highgradcomponent01df['prediction'].iloc[i] = 1
+     
+     
+   if lowgradcomponent01df['3component'].iloc[i] == 1:
+     highgradcomponent01df['prediction'].iloc[i] = 0
+      
+      
 highgradcomponent01df
