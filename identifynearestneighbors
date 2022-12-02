@@ -1,0 +1,35 @@
+import pandas as pd
+
+# The spacing between latitude and longitude data is not necesarilly uniform with some Sentinel products
+# To identify nearest neighbors for rule-based approaches, use a margin of error in identifying within the 10m distance by pixel
+
+
+for i in range(len(highgradcomponent01df)):
+  print(i)
+  for k in range(len(highgradcomponent01df)):
+    if 0.00025 <= highgradcomponent01df['y'].iloc[k] - highgradcomponent01df['y'].iloc[i] <= 0.00035:
+      if 0.00025 <= highgradcomponent01df['x'].iloc[k] - highgradcomponent01df['x'].iloc[i] <= 0.00035:
+        highgradcomponent01df['nearestneighborrightup'].iloc[i] = highgradcomponent01df['index'].iloc[k]
+      if -0.00005 <= highgradcomponent01df['x'].iloc[k] - highgradcomponent01df['x'].iloc[i] <= 0.00005:
+        highgradcomponent01df['nearestneighbormiddleup'].iloc[i] = highgradcomponent01df['index'].iloc[k]
+      if -0.00035 <= highgradcomponent01df['x'].iloc[k] - highgradcomponent01df['x'].iloc[i] <= -0.00025:
+        highgradcomponent01df['nearestneighborleftup'].iloc[i] = highgradcomponent01df['index'].iloc[k]
+
+
+    if -0.00005 <= highgradcomponent01df['y'].iloc[k] - highgradcomponent01df['y'].iloc[i] <= 0.00005:
+      if 0.00025 <= highgradcomponent01df['x'].iloc[k] - highgradcomponent01df['x'].iloc[i] <= 0.00035:
+        highgradcomponent01df['nearestneighborrightmiddle'].iloc[i] = highgradcomponent01df['index'].iloc[k]
+      if -0.00035 <= highgradcomponent01df['x'].iloc[k] - highgradcomponent01df['x'].iloc[i] <= -0.00025:
+        highgradcomponent01df['nearestneighborleftmiddle'].iloc[i] = highgradcomponent01df['index'].iloc[k]
+
+
+    if -0.00035 <= highgradcomponent01df['y'].iloc[k] - highgradcomponent01df['y'].iloc[i] <= -0.00025:
+      if 0.00025 <= highgradcomponent01df['x'].iloc[k] - highgradcomponent01df['x'].iloc[i] <= 0.00035:
+        highgradcomponent01df['nearestneighborrightbottom'].iloc[i] = highgradcomponent01df['index'].iloc[k]
+      if -0.00005 <= highgradcomponent01df['x'].iloc[k] - highgradcomponent01df['x'].iloc[i] <= 0.00005:
+        highgradcomponent01df['nearestneighbormiddlebottom'].iloc[i] = highgradcomponent01df['index'].iloc[k]
+      if -0.00035 <= highgradcomponent01df['x'].iloc[k] - highgradcomponent01df['x'].iloc[i] <= -0.00025:
+        highgradcomponent01df['nearestneighborleftbottom'].iloc[i] = highgradcomponent01df['index'].iloc[k]
+  
+  
+highgradcomponent01df
