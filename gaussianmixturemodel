@@ -3,27 +3,45 @@ import itertools
 import numpy as np
 from scipy import linalg
 import matplotlib.pyplot as plt
-import matplotlib as mpl
+from matplotlib.colors import LogNorm
 
 from sklearn import mixture 
-
-import matplotlib as mpl
 from sklearn.model_selection import StratifiedKFold
-from matplotlib.colors import LogNorm
-from sklearn import mixture
 
-predfeatures = yubastandardfloodingdf[['x','y','z','aspect','gradient','B220170130','B820170130','B2difference','B8difference', 'inundation']].copy()
-
+# Compile features that pixels will be clustered with
+predfeatures = floodingdf[['latitude',
+                           'longitude',
+                           'elevation',
+                           'aspect',
+                           'gradient',
+                           'initialVH',
+                           'initialVV',
+                           'VHdifference',
+                           'VVdifference',
+                           'initialB2',
+                           'initialB3',
+                           'initialB4',
+                           'initialB8',
+                           'B2difference',
+                           'B8difference',
+                           'B4difference',
+                           'B8difference']].copy()
+                
 predfeatures = predfeatures.reset_index()
 predfeatures = predfeatures.drop(columns=['index'])
 
-# Fixed 3-component Gaussian mixture
+
+# Compute a fixed 3-component Gaussian mixture using features 
 gmm = mixture.GaussianMixture(n_components=3, covariance_type="full").fit(predfeatures)
 predflooding3component = gmm.predict(predfeatures)
 
-# Fit a Dirichlet process Gaussian mixture using bounded-n components
-dpgmm = mixture.BayesianGaussianMixture(n_components=n, covariance_type="full").fit(predfeatures)
+
+# Compute a Dirichlet process Gaussian mixture with bounded-n components (e.g. 4)
+dpgmm = mixture.BayesianGaussianMixture(n_components=4, covariance_type="full").fit(predfeatures)
 predfloodingdirichletcomponent = dpgmm.predict(predfeatures)
 
-yubastandardfloodingdf['3component'] = predflooding3component.tolist()
-yubastandardfloodingdf
+
+# Add GMM results to dataframe
+floodingdf['3component'] = predflooding3component.tolist()
+floodingdf['dirichletcomponent'] = predfloodingdirichletcomponent.tolist()
+floodingdf
