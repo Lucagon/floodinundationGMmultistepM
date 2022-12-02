@@ -5,7 +5,7 @@
 import pandas as pd
 
 
-# A nearest-neighbor rules-based approach for high-gradient component 0//1 pixels
+# A nearest-neighbor rules-based approach for high-gradient component 0 & 1 pixels
 for i in range(len(highgradcomponent01df)):
   if 0 < highgradcomponent01df['aspect'].iloc[i] <= 45:
     if highgradcomponent01df['aspect'].iloc[i] > highgradcomponent01df.iloc[i - lonlength, 6]:
@@ -38,7 +38,7 @@ for i in range(len(highgradcomponent01df)):
       highgradcomponent01df['prediction'].iloc[i] = 1
 
 
-# Assumptions for low-gradient component 0//1 pixels
+# Assumptions for low-gradient component 0 & 1 pixels
 # The first component is assumed to have detectable statistics implying that it is largely inundated. Switch accordingly
 
 for i in range(len(lowgradcomponent01df)):
