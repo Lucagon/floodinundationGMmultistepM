@@ -8,6 +8,7 @@ from matplotlib.colors import LogNorm
 from sklearn import mixture 
 from sklearn.model_selection import StratifiedKFold
 
+
 # Compile features that pixels will be clustered with
 predfeatures = floodingdf[['latitude',
                            'longitude',
