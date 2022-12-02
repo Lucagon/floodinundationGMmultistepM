@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 
+import matplotlib.pyplot as plt
+
 # Stratify dataframe by 3-component results
 component0df = floodingdf[yubastandarddfinitial.target3component == 0]
 component1df = floodingdf[yubastandarddfinitial.target3component == 1]
@@ -10,6 +12,14 @@ component2df = floodingdf[yubastandarddfinitial.target3component == 2]
 frames = [component0df, component1df]
 component01df = pd.concat(frames)
 
-# Stratify dataframe by slope
+
+# Plot histogram of gradient by component, to source threshold for stratifying data by gradient
+plt.hist(component0df['gradient'], log=True, bins=50)
+# and
+plt.hist(component1df['gradient'], log=True, bins=50)
+# and
+plt.hist(component2df['gradient'], log=True, bins=50)
+
+# Stratify dataframe by gradient
 lowgradcomponent01df = component01df[component01df.gradient <= 785]
 highgradcomponent01df = component01df[component01df.gradient > 785]
