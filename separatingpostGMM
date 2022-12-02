@@ -4,13 +4,16 @@ import numpy as np
 import pandas as pd
 from sklearn.utils.extmath import row_norms
 
-component2df = yubastandarddfinitial[yubastandarddfinitial.target3component == 2]
-component0df = yubastandarddfinitial[yubastandarddfinitial.target3component == 0]
-component1df = yubastandarddfinitial[yubastandarddfinitial.target3component == 1]
+# Stratify dataframe by 3-component results
+component0df = floodingdf[yubastandarddfinitial.target3component == 0]
+component1df = floodingdf[yubastandarddfinitial.target3component == 1]
+component2df = floodingdf[yubastandarddfinitial.target3component == 2]
 
+# Construct dataframe with components with potential for inundation by compiling component0df & component0df [can use easily separable variables e.g. slope, elevation to determine components with potential for inundated pixels]
 frames = [component0df, component1df]
 component01df = pd.concat(frames)
 
+# Stratify dataframe by slope
 lowgradcomponent01df = component01df[component01df.gradient <= 785]
 highgradcomponent01df = component01df[component01df.gradient > 785]
 
