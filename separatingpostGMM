@@ -16,12 +16,3 @@ component01df = pd.concat(frames)
 # Stratify dataframe by slope
 lowgradcomponent01df = component01df[component01df.gradient <= 785]
 highgradcomponent01df = component01df[component01df.gradient > 785]
-
-confusion_matrix = pd.crosstab(lowgradcomponent01df['waterbody'], lowgradcomponent01df['target3component'], rownames=['Actual'], colnames=['Predicted'])
-
-sn.heatmap(confusion_matrix, annot=True)
-plt.show()
-
-
-
-plt.hist(yubastandarddfinitial['gradient'], log=True, bins=50)
