@@ -1,0 +1,43 @@
+import pandas as pd
+import pygmt
+
+
+# Find region boundaries for graph
+latmin = floodingdf['latitude'].min()
+latmax = floodingdf['latitude'].max()
+lonmin = floodingdf['longitude'].min()
+lonmax = floodingdf['longitude'].max()
+floodingregion = [lonmin, lonmax, latmin, latmax]
+
+# Build grid for predicted inundation
+# Ten meters is 0.00000899928 of a degree of latitude//longitude. Spacing can be adjusted depending on resolution
+
+
+floodingpredictiongrid = pygmt.xyz2grd(x=floodingdf.longitude,
+                                       y=floodingdf.latitude,
+                                       z=floodingdf.prediction,
+                                       spacing = [0.00000899928, 0.00000899928],
+                                       region = floodingregion)
+                                       
+                                       
+fig = pygmt.Figure()
+
+# Define figure configuration and plot inundation
+
+pygmt.config(FORMAT_GEO_MAP="ddd.x", MAP_FRAME_TYPE="plain")
+
+
+pygmt.makecpt(cmap="haxby", series=[0, 1, 1])
+fig.grdimage(
+    region = floodingregion,
+    grid= floodingpredictiongrid,
+    projection = "M12c",
+    frame = ['WSrt+t" Flooding Region Inundation"', "xa0.1", "ya0.1"],
+    cmap = True,
+)
+
+
+fig.colorbar(position="JML+o1.4c/0c+w7c/0.5c", frame=["xa200f50+lInundation", "y+l "])
+
+
+fig.show()
