@@ -1,0 +1,24 @@
+import seaborn as sn
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from sklearn.utils.extmath import row_norms
+
+component2df = yubastandarddfinitial[yubastandarddfinitial.target3component == 2]
+component0df = yubastandarddfinitial[yubastandarddfinitial.target3component == 0]
+component1df = yubastandarddfinitial[yubastandarddfinitial.target3component == 1]
+
+frames = [component0df, component1df]
+component01df = pd.concat(frames)
+
+lowgradcomponent01df = component01df[component01df.gradient <= 785]
+highgradcomponent01df = component01df[component01df.gradient > 785]
+
+confusion_matrix = pd.crosstab(lowgradcomponent01df['waterbody'], lowgradcomponent01df['target3component'], rownames=['Actual'], colnames=['Predicted'])
+
+sn.heatmap(confusion_matrix, annot=True)
+plt.show()
+
+
+
+plt.hist(yubastandarddfinitial['gradient'], log=True, bins=50)
