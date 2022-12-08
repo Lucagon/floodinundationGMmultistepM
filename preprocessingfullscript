@@ -22,26 +22,26 @@ LON_S1A_S6_GRDH_1SDV_20190425df = pd.read_csv('LON_S1A_S6_GRDH_1SDV_20190425.csv
 
 # CONCATENATE SENTINEL-1 DATA
 # Construct singlular SAR swath 1 dataframe
-chicago0427eventSARswath1df = LON_20190426_S1A_IW_GRDHdf
-chicago0427eventSARswath1df['lon'] = LON_20190426_S1A_IW_GRDHdf['z']
-chicago0427eventSARswath1df.drop(columns=['x', 'y', 'z'])
-chicago0427eventSARswath1df['lat'] = LAT_20190426_S1A_IW_GRDHdf['z']
+chicago0430eventSARswath1df = LON_20190426_S1A_IW_GRDHdf
+chicago0430eventSARswath1df['lon'] = LON_20190426_S1A_IW_GRDHdf['z']
+chicago0430eventSARswath1df.drop(columns=['x', 'y', 'z'])
+chicago0430eventSARswath1df['lat'] = LAT_20190426_S1A_IW_GRDHdf['z']
 
-chicago0427eventSARswath1df['VVamplitude_before'] = VVamplitude_S1A_IW_GRDH_1SDV_20190426df['z']
-chicago0427eventSARswath1df['VHamplitude_before'] = VHamplitude_S1A_IW_GRDH_1SDV_20190426df['z']
-chicago0427eventSARswath1df['VVamplitude_after'] = VVamplitude_S1A_IW_GRDH_1SDV_20190508df['z']
-chicago0427eventSARswath1df['VHamplitude_after'] = VHamplitude_S1A_IW_GRDH_1SDV_20190508df['z']
+chicago0430eventSARswath1df['VVamplitude_before'] = VVamplitude_S1A_IW_GRDH_1SDV_20190426df['z']
+chicago0430eventSARswath1df['VHamplitude_before'] = VHamplitude_S1A_IW_GRDH_1SDV_20190426df['z']
+chicago0430eventSARswath1df['VVamplitude_after'] = VVamplitude_S1A_IW_GRDH_1SDV_20190508df['z']
+chicago0430eventSARswath1df['VHamplitude_after'] = VHamplitude_S1A_IW_GRDH_1SDV_20190508df['z']
 
 # Construct singlular SAR swath 2 dataframe
-chicago0427eventSARswath2df = LON_S1A_S6_GRDH_1SDV_20190425df
-chicago0427eventSARswath2df['lon'] = LON_S1A_S6_GRDH_1SDV_20190425df['z']
-chicago0427eventSARswath2df.drop(columns=['x', 'y', 'z'])
-chicago0427eventSARswath2df['lat'] = LAT_S1A_S6_GRDH_1SDV_20190425df['z']
+chicago0430eventSARswath2df = LON_S1A_S6_GRDH_1SDV_20190425df
+chicago0430eventSARswath2df['lon'] = LON_S1A_S6_GRDH_1SDV_20190425df['z']
+chicago0430eventSARswath2df.drop(columns=['x', 'y', 'z'])
+chicago0430eventSARswath2df['lat'] = LAT_S1A_S6_GRDH_1SDV_20190425df['z']
 
-chicago0427eventSARswath2df['VVamplitude_before'] = VVamplitude_S1A_S6_GRDH_1SDV_20190425df['z'] #adjust intensities accordingly
-chicago0427eventSARswath2df['VHamplitude_before'] = VHamplitude_S1A_S6_GRDH_1SDV_20190425df['z']
-chicago0427eventSARswath2df['VVamplitude_after'] = VVamplitude_S1A_S6_GRDH_1SDV_20190507df['z']
-chicago0427eventSARswath2df['VHamplitude_after'] = VHamplitude_S1A_S6_GRDH_1SDV_20190507df['z']
+chicago0430eventSARswath2df['VVamplitude_before'] = VVamplitude_S1A_S6_GRDH_1SDV_20190425df['z'] #adjust intensities accordingly
+chicago0430eventSARswath2df['VHamplitude_before'] = VHamplitude_S1A_S6_GRDH_1SDV_20190425df['z']
+chicago0430eventSARswath2df['VVamplitude_after'] = VVamplitude_S1A_S6_GRDH_1SDV_20190507df['z']
+chicago0430eventSARswath2df['VHamplitude_after'] = VHamplitude_S1A_S6_GRDH_1SDV_20190507df['z']
 
 # Concatenate SAR swath dataframes
 frames = [chicago0427eventSARswath1df, chicago0427eventSARswath2df]
