@@ -181,4 +181,5 @@ exportchicago0427eventdf['waterbodyarea'] = exportcookwaterbodydf['z']
 exportchicago0427eventdf['waterbody'] = exportchicago0427eventdf['waterbodyarea'].astype(bool).astype(int)
 
 # Export single normalized dataframe
+exportchicago0427eventdf = exportchicago0427eventdf.dropna()
 exportchicago0427eventdf.to_csv('exportchicago0427event.csv', encoding = 'utf-8-sig') 
