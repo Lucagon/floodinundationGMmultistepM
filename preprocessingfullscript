@@ -1,0 +1,184 @@
+import pygmt
+import pandas as pd
+
+# IMPORT SENTINEL-1 SAR DATA
+# Sentinel-1 SAR data for swath 1
+LON_20190426_S1A_IW_GRDHdf = pd.read_csv('LON_20190426_S1A_IW_GRDH.csv')
+LAT_20190426_S1A_IW_GRDHdf = pd.read_csv('LAT_20190426_S1A_IW_GRDH.csv')
+
+VVamplitude_S1A_IW_GRDH_1SDV_20190426df = pd.read_csv('VVamplitude_S1A_IW_GRDH_1SDV_20190426.csv')
+VHamplitude_S1A_IW_GRDH_1SDV_20190426df = pd.read_csv('VHamplitude_S1A_IW_GRDH_1SDV_20190426.csv')
+VVamplitude_S1A_IW_GRDH_1SDV_20190508df = pd.read_csv('VVamplitude_S1A_IW_GRDH_1SDV_20190508.csv')
+VHamplitude_S1A_IW_GRDH_1SDV_20190508df = pd.read_csv('VHamplitude_S1A_IW_GRDH_1SDV_20190508.csv')
+
+# Sentinel-1 SAR data for swath 2
+VVamplitude_S1A_S6_GRDH_1SDV_20190425df = pd.read_csv('VVamplitude_S1A_S6_GRDH_1SDV_20190425.csv')
+VHamplitude_S1A_S6_GRDH_1SDV_20190425df = pd.read_csv('VHamplitude_S1A_S6_GRDH_1SDV_20190425.csv')
+VVamplitude_S1A_S6_GRDH_1SDV_20190507df = pd.read_csv('VVamplitude_S1A_S6_GRDH_1SDV_20190507.csv')
+VHamplitude_S1A_S6_GRDH_1SDV_20190507df = pd.read_csv('VHamplitude_S1A_S6_GRDH_1SDV_20190507.csv')
+
+LAT_S1A_S6_GRDH_1SDV_20190425df = pd.read_csv('LAT_S1A_S6_GRDH_1SDV_20190425.csv')
+LON_S1A_S6_GRDH_1SDV_20190425df = pd.read_csv('LON_S1A_S6_GRDH_1SDV_20190425.csv')
+
+# CONCATENATE SENTINEL-1 DATA
+# Construct singlular SAR swath 1 dataframe
+chicago0427eventSARswath1df = LON_20190426_S1A_IW_GRDHdf
+chicago0427eventSARswath1df['lon'] = LON_20190426_S1A_IW_GRDHdf['z']
+chicago0427eventSARswath1df.drop(columns=['x', 'y', 'z'])
+chicago0427eventSARswath1df['lat'] = LAT_20190426_S1A_IW_GRDHdf['z']
+
+chicago0427eventSARswath1df['VVamplitude_before'] = VVamplitude_S1A_IW_GRDH_1SDV_20190426df['z']
+chicago0427eventSARswath1df['VHamplitude_before'] = VHamplitude_S1A_IW_GRDH_1SDV_20190426df['z']
+chicago0427eventSARswath1df['VVamplitude_after'] = VVamplitude_S1A_IW_GRDH_1SDV_20190508df['z']
+chicago0427eventSARswath1df['VHamplitude_after'] = VHamplitude_S1A_IW_GRDH_1SDV_20190508df['z']
+
+# Construct singlular SAR swath 2 dataframe
+chicago0427eventSARswath2df = LON_S1A_S6_GRDH_1SDV_20190425df
+chicago0427eventSARswath2df['lon'] = LON_S1A_S6_GRDH_1SDV_20190425df['z']
+chicago0427eventSARswath2df.drop(columns=['x', 'y', 'z'])
+chicago0427eventSARswath2df['lat'] = LAT_S1A_S6_GRDH_1SDV_20190425df['z']
+
+chicago0427eventSARswath2df['VVamplitude_before'] = VVamplitude_S1A_S6_GRDH_1SDV_20190425df['z'] #adjust intensities accordingly
+chicago0427eventSARswath2df['VHamplitude_before'] = VHamplitude_S1A_S6_GRDH_1SDV_20190425df['z']
+chicago0427eventSARswath2df['VVamplitude_after'] = VVamplitude_S1A_S6_GRDH_1SDV_20190507df['z']
+chicago0427eventSARswath2df['VHamplitude_after'] = VHamplitude_S1A_S6_GRDH_1SDV_20190507df['z']
+
+# Concatenate SAR swath dataframes
+frames = [chicago0427eventSARswath1df, chicago0427eventSARswath2df]
+chicago0427eventSARdf = pd.concat(frames)
+chicago0427eventSARdf = chicago0427eventSARdf.loc[(chicago0427eventSARdf[['VVamplitude_before', 'VHamplitude_before', 'VVamplitude_after', 'VHamplitude_after']] != 0).all(axis=1)]
+
+# IMPORT SENTINEL-2 MSI DATA
+LON_20190426_S2B_MSIL2Adf = pd.read_csv('LON_20190426_S2B_MSIL2A.csv')
+LAT_20190426_S2B_MSIL2Adf = pd.read_csv('LAT_20190426_S2B_MSIL2A.csv')
+
+#B2_20190426_S2B_MSIL2Adf = pd.read_csv('B2_20190426_S2B_MSIL2A.csv')
+#B2_20190506_S2B_MSIL2Adf = pd.read_csv('B2_20190506_S2B_MSIL2A.csv')
+#B3_20190426_S2B_MSIL2Adf = pd.read_csv('B3_20190426_S2B_MSIL2A.csv')
+#B3_20190506_S2B_MSIL2Adf = pd.read_csv('B3_20190506_S2B_MSIL2A.csv')
+#B4_20190426_S2B_MSIL2Adf = pd.read_csv('B4_20190426_S2B_MSIL2A.csv')
+#B4_20190506_S2B_MSIL2Adf = pd.read_csv('B4_20190506_S2B_MSIL2A.csv')
+B8_20190426_S2B_MSIL2Adf = pd.read_csv('B8_20190426_S2B_MSIL2A.csv')
+#B8_20190506_S2B_MSIL2Adf = pd.read_csv('B8_20190506_S2B_MSIL2A.csv')
+
+# CONCATENATE SENTINEL-2 DATA
+chicago0427eventMSIdf = LON_20190426_S2B_MSIL2Adf
+chicago0427eventMSIdf['lon'] = LON_20190426_S2B_MSIL2Adf['z']
+chicago0427eventMSIdf.drop(columns=['x', 'y', 'z'])
+
+chicago0427eventMSIdf['lat'] = LAT_20190426_S2B_MSIL2Adf['z']
+
+#chicago0427eventMSIdf['B2_before'] = B2_20190426_S2B_MSIL2Adf['z']
+#chicago0427eventMSIdf['B2_20190506'] = B2_20190506_S2B_MSIL2Adf['z']
+#chicago0427eventMSIdf['B3_before'] = B3_20190426_S2B_MSIL2Adf['z']
+#chicago0427eventMSIdf['B3_20190506'] = B3_20190506_S2B_MSIL2Adf['z']
+#chicago0427eventMSIdf['B4_before'] = B4_20190426_S2B_MSIL2Adf['z']
+#chicago0427eventMSIdf['B4_20190506'] = B4_20190506_S2B_MSIL2Adf['z']
+chicago0427eventMSIdf['B8_before'] = B8_20190426_S2B_MSIL2Adf['z']
+#chicago0427eventMSIdf['B8_20190506'] = B8_20190506_S2B_MSIL2Adf['z']
+
+
+# PREPARE NORMALIZED GRIDS FROM DATAFRAMES
+# Make region and normalized spacing for data grids
+chicago0427eventregion = [-88.21642, -87.25, 41.642426, 42.452644]
+thirtymeterspacing = [0.0002777777, 0.0002777777]
+
+# Make grids to normalize Sentinel-1 spacing with, for post-event values and difference in values
+VVamplitude_aftergrid = pygmt.xyz2grd(x=chicago0427eventSARdf.lon, y=chicago0427eventSARdf.lat, z=chicago0427eventSARdf.VVamplitude_after, spacing = thirtymeterspacing, region = chicago0427eventregion)
+VHamplitude_aftergrid = pygmt.xyz2grd(x=chicago0427eventSARdf.lon, y=chicago0427eventSARdf.lat, z=chicago0427eventSARdf.VHamplitude_after, spacing = thirtymeterspacing, region = chicago0427eventregion)
+VVamplitude_differencegrid = pygmt.xyz2grd(x=chicago0427eventSARdf.lon, y=chicago0427eventSARdf.lat, z=chicago0427eventSARdf.VVamplitude_after - chicago0427eventSARdf.VVamplitude_before, spacing = thirtymeterspacing, region = chicago0427eventregion)
+VHamplitude_differencegrid = pygmt.xyz2grd(x=chicago0427eventSARdf.lon, y=chicago0427eventSARdf.lat, z=chicago0427eventSARdf.VVamplitude_after - chicago0427eventSARdf.VHamplitude_before, spacing = thirtymeterspacing, region = chicago0427eventregion)
+
+# Make grids to normalize Sentinel-2 spacing with, for post-event values and difference in values
+B2_beforegrid = pygmt.xyz2grd(x=chicago0427eventMSIdf.lon, y=chicago0427eventMSIdf.lat, z=chicago0427eventMSIdf.B2_before, spacing = thirtymeterspacing, region = chicago0427eventregion)
+B3_beforegrid = pygmt.xyz2grd(x=chicago0427eventMSIdf.lon, y=chicago0427eventMSIdf.lat, z=chicago0427eventMSIdf.B3_before, spacing = thirtymeterspacing, region = chicago0427eventregion)
+B4_beforegrid = pygmt.xyz2grd(x=chicago0427eventMSIdf.lon, y=chicago0427eventMSIdf.lat, z=chicago0427eventMSIdf.B4_before, spacing = thirtymeterspacing, region = chicago0427eventregion)
+B8_beforegrid = pygmt.xyz2grd(x=chicago0427eventMSIdf.lon, y=chicago0427eventMSIdf.lat, z=chicago0427eventMSIdf.B8_before, spacing = thirtymeterspacing, region = chicago0427eventregion)
+B2_differencegrid = pygmt.xyz2grd(x=chicago0427eventMSIdf.lon, y=chicago0427eventMSIdf.lat, z=chicago0427eventMSIdf.B2_20190506 - chicago0427eventMSIdf.B2_20190426, spacing = thirtymeterspacing, region = chicago0427eventregion)
+B3_differencegrid = pygmt.xyz2grd(x=chicago0427eventMSIdf.lon, y=chicago0427eventMSIdf.lat, z=chicago0427eventMSIdf.B3_20190506 - chicago0427eventMSIdf.B3_20190426, spacing = thirtymeterspacing, region = chicago0427eventregion)
+B4_differencegrid = pygmt.xyz2grd(x=chicago0427eventMSIdf.lon, y=chicago0427eventMSIdf.lat, z=chicago0427eventMSIdf.B4_20190506 - chicago0427eventMSIdf.B4_20190426, spacing = thirtymeterspacing, region = chicago0427eventregion)
+B8_differencegrid = pygmt.xyz2grd(x=chicago0427eventMSIdf.lon, y=chicago0427eventMSIdf.lat, z=chicago0427eventMSIdf.B8_20190506 - chicago0427eventMSIdf.B8_20190426, spacing = thirtymeterspacing, region = chicago0427eventregion)
+
+# Make elevation, aspect, and gradient (DEM) grids normalized to Sentinel data spacing
+cookelevationgrid = pygmt.datasets.load_earth_relief(resolution = "01s", region = chicago0427eventregion)
+cookaspectgrid = pygmt.grdgradient(grid=cookelevationgrid, direction = "a", slope_file = "cookgradient")
+
+# Import NHD waterbody data and convert to grid
+cookwaterbodydf = pd.read_csv('ChicagoNHDIntersect.csv')
+cookwaterbodygrid = pygmt.xyz2grd(x = cookwaterbodydf.right, y = cookwaterbodydf.top, z = cookwaterbodydf.areasqkm, spacing = thirtymeterspacing, region = chicago0427eventregion)
+
+
+# -------------- MAKE AN EXAMPLE GRID FIGURE with Sentinel-1 vertical transmit // vertical recieve polarization difference -------------------
+
+fig = pygmt.Figure()
+
+pygmt.config(FORMAT_GEO_MAP="ddd.x", MAP_FRAME_TYPE="plain")
+
+pygmt.makecpt(cmap="haxby", series=[0, 250, 1])
+fig.grdimage(
+    region = chicago0427eventregion,
+    grid = VVamplitude_differencegrid, # test normalized grid to liking
+    projection = "M12c",
+    frame = ['WSrt+t" Chicago region VV-polarization, post v. pre-event difference"', "xa0.1", "ya0.1"],
+    cmap = True,
+)
+
+fig.colorbar(position = "JML+o1.4c/0c+w7c/0.5c", frame = ["xa250f125+lmagnitude", "y+l "])
+
+fig.show()
+
+# ---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# BUILDING SINGLE NORMALIZED + EXPORTABLE DATAFRAME
+# Convert normalized Sentinel grids to dataframes
+exportVVamplitude_afterdf = pygmt.grd2xyz(grid=VVamplitude_aftergrid, output_type="pandas")
+exportVHamplitude_afterdf = pygmt.grd2xyz(grid=VHamplitude_aftergrid, output_type="pandas")
+exportVVamplitude_differencedf = pygmt.grd2xyz(grid=VVamplitude_differencegrid, output_type="pandas")
+exportVHamplitude_differencedf = pygmt.grd2xyz(grid=VHamplitude_differencegrid, output_type="pandas")
+
+exportB2_beforedf = pygmt.grd2xyz(grid=B2_beforegrid, output_type="pandas")
+exportB3_beforedf = pygmt.grd2xyz(grid=B3_beforegrid, output_type="pandas")
+exportB4_beforedf = pygmt.grd2xyz(grid=B4_beforegrid, output_type="pandas")
+exportB8_beforedf = pygmt.grd2xyz(grid=B8_beforegrid, output_type="pandas")
+exportB2_differencedf = pygmt.grd2xyz(grid=B2_differencegrid, output_type="pandas")
+exportB3_differencedf = pygmt.grd2xyz(grid=B3_differencegrid, output_type="pandas")
+exportB4_differencedf = pygmt.grd2xyz(grid=B4_differencegrid, output_type="pandas")
+exportB8_differencedf = pygmt.grd2xyz(grid=B8_differencegrid, output_type="pandas")
+
+# Convert normalized DEM grids to Pandas dataframes
+exportelevationdf = pygmt.grd2xyz(grid=cookelevationgrid, output_type="pandas")
+exportaspectdf = pygmt.grd2xyz(grid=cookaspectgrid, output_type="pandas")
+exportgradientdf = pygmt.grd2xyz(grid="cookgradient", output_type="pandas")
+
+# Convert normalized waterbody information to Pandas dataframe
+exportcookwaterbodydf = pygmt.grd2xyz(grid=cookwaterbodygrid, output_type="pandas")
+exportcookwaterbodydf = exportcookwaterbodydf.fillna(0)
+
+# Concatenate normalized dataframes to single exportable dataframe
+exportchicago0427eventdf = exportVVamplitude_afterdf
+exportchicago0427eventdf['VVamplitude_after'] = exportVVamplitude_afterdf['z']
+exportchicago0427eventdf.drop(columns=['z'])
+
+exportchicago0427eventdf['VHamplitude_after'] = exportVHamplitude_afterdf['z']
+exportchicago0427eventdf['VVamplitude_difference'] = exportVVamplitude_differencedf['z']
+exportchicago0427eventdf['VHamplitude_difference'] = exportVHamplitude_differencedf['z']
+
+exportchicago0427eventdf['B2_before'] = exportB2_beforedf['z']
+exportchicago0427eventdf['B3_before'] = exportB3_beforedf['z']
+exportchicago0427eventdf['B4_before'] = exportB4_beforedf['z']
+exportchicago0427eventdf['B8_before'] = exportB8_beforedf['z']
+exportchicago0427eventdf['B2_difference'] = exportB2_differencedf['z']
+exportchicago0427eventdf['B3_difference'] = exportB3_differencedf['z']
+exportchicago0427eventdf['B4_difference'] = exportB4_differencedf['z']
+exportchicago0427eventdf['B8_difference'] = exportB8_differencedf['z']
+
+exportchicago0427eventdf['elevation'] = exportelevationdf['z']
+exportchicago0427eventdf['aspect'] = exportaspectdf['z']
+exportchicago0427eventdf['gradient'] = exportgradientdf['z']
+
+exportchicago0427eventdf['waterbodyarea'] = exportcookwaterbodydf['z']
+exportchicago0427eventdf['waterbody'] = exportchicago0427eventdf['waterbodyarea'].astype(bool).astype(int)
+
+# Export single normalized dataframe
+exportchicago0427eventdf.to_csv('exportchicago0427event.csv', encoding = 'utf-8-sig') 
