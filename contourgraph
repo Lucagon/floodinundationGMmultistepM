@@ -1,0 +1,21 @@
+import pygmt
+
+chicago0427eventregion = [-88.21642, -87.25, 41.642426, 42.452644]
+
+grid = pygmt.datasets.load_earth_relief(resolution="15s", region=chicago0427eventregion)
+
+fig = pygmt.Figure()
+fig.grdimage(
+    grid=grid,
+    cmap="haxby",
+    projection="M10c",
+    frame=['WSrt+t" Chicago relief, 15s"', "xa0.1", "ya0.1"],
+)
+fig.grdcontour(
+    annotation=100,
+    interval=10,
+    grid=grid,
+    limit=[-200, 2000],
+)
+
+fig.show()
