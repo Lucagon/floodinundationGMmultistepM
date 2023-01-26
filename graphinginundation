@@ -1,6 +1,7 @@
 import pandas as pd
 import pygmt
 
+floodingdf = pd.read_csv('inundation file path')
 
 # Find region boundaries for graph
 latmin = floodingdf['latitude'].min()
@@ -11,12 +12,12 @@ floodingregion = [lonmin, lonmax, latmin, latmax]
 
 # Build grid for predicted inundation
 # Ten meters is 0.00000899928 of a degree of latitude//longitude. Spacing can be adjusted depending on resolution
-
+# Resolution for 0807 event is [0.00027380127, 0.00026912245]
 
 floodingpredictiongrid = pygmt.xyz2grd(x=floodingdf.longitude,
                                        y=floodingdf.latitude,
                                        z=floodingdf.prediction,
-                                       spacing = [0.00000899928, 0.00000899928],
+                                       spacing = [0.00027380127, 0.00026912245],
                                        region = floodingregion)
                                        
                                        
