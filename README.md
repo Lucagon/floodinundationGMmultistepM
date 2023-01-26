@@ -1,5 +1,8 @@
 # floodinundationGMmultistepM
 
+pygmt install
+https://www.pygmt.org/latest/install.html
+
 Waterbody information
 https://www.usgs.gov/national-hydrography/national-hydrography-dataset
 
