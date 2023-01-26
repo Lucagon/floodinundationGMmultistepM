@@ -1,7 +1,7 @@
 import pandas as pd
 import pygmt
 
-floodingdf = pd.read_csv('inundation file path')
+# convert tiff to dataframe
 
 # Find region boundaries for graph
 latmin = floodingdf['latitude'].min()
